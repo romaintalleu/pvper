@@ -1,4 +1,4 @@
-![pvper](raw.github.com/abidon/pvper/master/docs/pvper-logo.png)
+![pvper](https://raw.githubusercontent.com/abidon/pvper/master/docs/pvper-logo.png)
 ===
 
 > This is ___pvper___ `v0.1.0pre`.  
@@ -12,7 +12,7 @@ __pvper__ is a C++ bare metal programming environment for the Raspberry Pi. It p
 ---
 ### Features
 
-[Patch list](raw.github.com/abidon/pvper/master/docs/patch-list.txt)
+[Patch list](https://raw.githubusercontent.com/abidon/pvper/master/docs/patch-list.txt)
 
 This release introduced partial support for the C++ language (static objects only), UART/serial output and usage of GPIO pins.
 
