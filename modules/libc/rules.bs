@@ -1,0 +1,33 @@
+function libc_compile {
+	local ROOTDIR="../../"
+	local BUILDDIR="${ROOTDIR}build/libc/"
+	local SRCDIR="src/"
+	
+	local ASM_LIST=""
+	local C_LIST="assert"
+	local CXX_LIST=""
+
+	echo "	— Task [libc_compile]"
+
+	for file in $ASM_LIST; do
+		output_file=$(echo $file | sed "s/\//_/g")
+		echo " AS $file > $output_file"
+		${CROSS}gcc $MACH_FLAGS $COMMON_FLAGS -c ${SRCDIR}${file}.S -o ${BUILDDIR}${output_file}.asm.o
+	done
+
+	for file in $C_LIST; do
+		output_file=$(echo $file | sed "s/\//_/g")
+		echo "  C $file > $output_file"
+		${CROSS}gcc $MACH_FLAGS $COMMON_FLAGS $CFLG -c ${SRCDIR}${file}.c -o ${BUILDDIR}${output_file}.c.o
+	done
+
+	for file in $CXX_LIST; do
+		output_file=$(echo $file | sed "s/\//_/g")
+		echo "CXX $file > $output_file"
+		${CROSS}g++ $MACH_FLAGS $COMMON_FLAGS $CXXFLG -c ${SRCDIR}${file}.cpp -o ${BUILDDIR}${output_file}.cxx.o
+	done
+}
+
+function libc_install {
+	return
+}

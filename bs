@@ -1,0 +1,62 @@
+#!/bin/sh
+
+export CROSS="arm-none-eabi-"
+
+export DESTINATION="/Volumes/PVPER/"
+
+export COMMON_FLAGS="-fpic -ffreestanding -O6 -nostdinc -nostartfiles -nostdlib"
+export MACH_FLAGS="-mcpu=arm1176jzf-s"
+
+export CFLG_COMMON="-I../../include"
+export CFLG="$CFLG_COMMON -std=c99"
+export CXXFLG="$CFLG_COMMON -fno-exceptions -fno-rtti -std=c++11"
+
+export MODULES_LIST="libc kern"
+
+function compile {
+	for mod in $MODULES_LIST; do
+		mkdir -p build/${mod}
+		cd modules/${mod}
+		${mod}_compile
+		cd ../..
+	done
+}
+
+function install {
+	for mod in $MODULES_LIST; do
+		mkdir -p build/${mod}
+		cd modules/${mod}
+		${mod}_install
+		cd ../..
+	done
+}
+
+function clean {
+	echo "	— Task [clean]"
+	rm -rf build
+}
+
+if [[ $# -eq 0 ]]; then
+	echo "	usage: $0 <task1> [<task2> ... <taskn>]"
+	echo "	refer to documentation for the list of supported tasks"
+	exit -1
+fi
+
+for mod in $MODULES_LIST; do
+	echo "	— Resolving module ${mod}"
+	source modules/${mod}/rules.bs
+done
+
+for task in $*; do
+	case $task in
+		compile ) compile
+		;;
+		install ) install
+		;;
+		clean ) clean
+		;;
+		* ) echo "	! Unrecognized task name $task. Exiting..."
+		exit -2
+		;;
+	esac
+done

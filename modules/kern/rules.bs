@@ -1,0 +1,39 @@
+function kern_compile {
+	local ROOTDIR="../../"
+	local BUILDDIR="${ROOTDIR}build/kern/"
+	local SRCDIR="src/"
+
+	local LOCAL_FLAGS="-Iinclude/"
+	
+	local ASM_LIST="init"
+	local C_LIST="crti crtn cppsupport"
+	local CXX_LIST="bootstrap init plat/hw/Gpio plat/hw/Serial plat/hw/Sync"
+
+	echo "	— Task [kern_compile]"
+
+	for file in $ASM_LIST; do
+		output_file=$(echo $file | sed "s/\//_/g")
+		echo " AS $file > $output_file"
+		${CROSS}gcc $MACH_FLAGS $LOCAL_FLAGS $COMMON_FLAGS -c ${SRCDIR}${file}.S -o ${BUILDDIR}${output_file}.asm.o
+	done
+
+	for file in $C_LIST; do
+		output_file=$(echo $file | sed "s/\//_/g")
+		echo "  C $file > $output_file"
+		${CROSS}gcc $MACH_FLAGS $LOCAL_FLAGS $COMMON_FLAGS $CFLG -c ${SRCDIR}${file}.c -o ${BUILDDIR}${output_file}.c.o
+	done
+
+	for file in $CXX_LIST; do
+		output_file=$(echo $file | sed "s/\//_/g")
+		echo "CXX $file > $output_file"
+		${CROSS}g++ $MACH_FLAGS $LOCAL_FLAGS $COMMON_FLAGS $CXXFLG -c ${SRCDIR}${file}.cpp -o ${BUILDDIR}${output_file}.cxx.o
+	done
+
+	${CROSS}gcc -T linker.ld -L${ROOTDIR}build/libc/ -o ${BUILDDIR}pvper.elf $COMMON_FLAGS ${BUILDDIR}*.o
+	${CROSS}objcopy ${BUILDDIR}pvper.elf -O binary ${BUILDDIR}pvper.bin
+}
+
+function kern_install {
+	echo "	— Task [kern_install]"
+	cp ../../build/kern/pvper.bin ${DESTINATION}kernel.img
+}

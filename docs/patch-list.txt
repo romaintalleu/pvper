@@ -1,0 +1,13 @@
+PVPER — Patch list
+
+Todo:
+	Fetch atags
+	Memory allocation
+	Move some functions into libc and start using it
+	Some C++ containers (string, vector, list, stack?)
+
+Release 0.1.0 (2015/03/07):
+	Assertions
+	Partial support of C++ langage features (static objects initialization/destruction)
+	Serial line over UART0
+	Usage of GPIO pins
