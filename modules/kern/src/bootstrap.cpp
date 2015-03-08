@@ -1,16 +1,11 @@
 #include <priv/base.h>
 #include <priv/hw/Gpio.h>
 #include <priv/hw/Serial.h>
+#include <angle/types.h>
 
 EXTERNC void __assert(const char *message, const char *filename, const uint32_t line) {
 	pvper::hw::Serial &serialLine = pvper::hw::Serial::shared();
-	serialLine.puts("Assertion failed: ");
-	serialLine.puts(filename);
-	serialLine.puts(":");
-	serialLine.puts(todec(line, 0));
-	serialLine.puts("\r\n\t> ");
-	serialLine.puts(message);
-	serialLine.puts("\r\n");
+	serialLine << "Assertion failed: " << filename << ":" << line << "\n\t> " << message << "\n";
 	__halt();
 }
 
@@ -27,13 +22,18 @@ EXTERNC void bootstrap(void)
 	while (bss < __bss_end)
 		*bss++ = 0;
 
-	// Initialize drivers
-	pvper::hw::GpioPin::initialize();
+	// Init globals
+	extern void _init(void);
+	_init();
 
 	// Jump to kernel entry point
 	__asm__ volatile("mov lr, %[entry_point]" : : [entry_point] "r" ((unsigned int)&kinit) );
 	__asm__ volatile("pop {r0, r1, r2}");
-	__asm__ volatile("bx lr");
+	__asm__ volatile("blx lr");
+
+	// Delete globals
+	extern void _fini(void);
+	_fini();
 
 	__halt();
 }

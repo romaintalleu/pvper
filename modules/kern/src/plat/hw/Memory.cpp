@@ -5,17 +5,17 @@
 
 namespace pvper {
 namespace hw {
+	MemoryManager MemoryManager::instance;
+
 	/*static*/ MemoryManager&
 	MemoryManager::shared()
 	{
-		static MemoryManager instance;
 		return instance;
 	}
 
 	MemoryManager::MemoryManager() :
-	_nextBlock((void*)HEAP_BASE)
-	{
-	}
+	_nextBlock((uint8_t*)HEAP_BASE)
+	{ }
 
 	MemoryManager::~MemoryManager()
 	{ }
@@ -23,22 +23,18 @@ namespace hw {
 	void*
 	MemoryManager::alloc(const size_t size)
 	{
+		assert(size != 0);
 		void* zone = _nextBlock;
-		pvper::hw::Serial::shared().puts("Allocating memory zone of ");
-		pvper::hw::Serial::shared().puts(todec(size, 0));
-		pvper::hw::Serial::shared().puts(" bytes at 0x");
-		pvper::hw::Serial::shared().puts(tohex((uint32_t)zone, 4));
-		pvper::hw::Serial::shared().puts(".\r\n");
 		_nextBlock = ((uint8_t*)_nextBlock + (size < 4 ? 4 : size));
+		pvper::hw::Serial::shared() << "Memory manager " << this << " allocated memory zone of " << size << " bytes at " << zone << ", next block starts at " << _nextBlock << ".\n";
 		return zone;
 	}
 
 	void
 	MemoryManager::dealloc(void* zone)
 	{
-		pvper::hw::Serial::shared().puts("Deallocating memory zone at 0x");
-		pvper::hw::Serial::shared().puts(tohex((uint32_t)zone, 4));
-		pvper::hw::Serial::shared().puts(".\r\n");
+		assert(zone != nullptr);
+		pvper::hw::Serial::shared() << "Deallocating memory zone at " << zone << ".\n";
 		return;
 	}
 }

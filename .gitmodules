@@ -1,0 +1,3 @@
+[submodule "deps/angle"]
+	path = deps/angle
+	url = https://github.com/abidon/angle.git

@@ -1,6 +1,8 @@
 #pragma once
 #include <priv/base.h>
 
+#define GPIO_PIN_COUNT 54
+
 namespace pvper {
 namespace hw {
 
@@ -25,8 +27,6 @@ namespace hw {
 		bool _state;
 
 	public:
-		GpioPin() __attribute__((deprecated));
-		
 		static const GpioPin&
 		immutablePin(const uint16_t pin);
 
@@ -47,6 +47,12 @@ namespace hw {
 		
 		void
 		write(const bool state);
+
+	protected:
+		GpioPin();
+
+		static uint32_t s_nextPin;
+		static GpioPin s_pins[GPIO_PIN_COUNT];
 	};
 
 }

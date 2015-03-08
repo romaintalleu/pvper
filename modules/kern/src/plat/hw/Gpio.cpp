@@ -3,35 +3,16 @@
 #include <priv/hw/MMIO.h>
 #include <priv/hw/Sync.h>
 
-#define GPIO_PIN_COUNT 54
-
 namespace pvper {
 namespace hw {
-	static uint32_t s_nextPin;
-
-#pragma GCC diagnostic push // disable deprecation for usage of GpioPin ctor
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-	static GpioPin s_pins[GPIO_PIN_COUNT];
-#pragma GCC diagnostic pop
+	/*static*/ uint32_t GpioPin::s_nextPin = 0;
+	/*static*/ GpioPin GpioPin::s_pins[GPIO_PIN_COUNT];
 
 	/*static*/ const GpioPin&
 	GpioPin::immutablePin(const uint16_t pin)
 	{
 		assert(pin < GPIO_PIN_COUNT);
 		return s_pins[pin];
-	}
-
-	/*static*/ void
-	GpioPin::initialize()
-	{
-		s_nextPin = 0;
-		for (uint32_t _(0); _<GPIO_PIN_COUNT; _++)
-		{
-#pragma GCC diagnostic push // disable deprecation for usage of GpioPin ctor
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-			s_pins[_] = GpioPin();
-#pragma GCC diagnostic pop
-		}
 	}
 
 	/*static*/ GpioPin&

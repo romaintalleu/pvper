@@ -18,7 +18,9 @@ namespace hw {
 		MemoryManager();
 		~MemoryManager();
 
-		void *_nextBlock;
+		static MemoryManager instance;
+
+		uint8_t *_nextBlock;
 	};
 }
 }

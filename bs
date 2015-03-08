@@ -4,10 +4,10 @@ export CROSS="arm-none-eabi-"
 
 export DESTINATION="/Volumes/PVPER/"
 
-export COMMON_FLAGS="-fpic -ffreestanding -O6 -nostdinc -nostartfiles -nostdlib"
+export COMMON_FLAGS="-fpic -ffreestanding -nostdinc -nostartfiles -nostdlib"
 export MACH_FLAGS="-mcpu=arm1176jzf-s"
 
-export CFLG_COMMON="-I../../include"
+export CFLG_COMMON="-I../../include  -I../../deps/angle -D_types_h" # Exclude angle/types.h
 export CFLG="$CFLG_COMMON -std=c99"
 export CXXFLG="$CFLG_COMMON -fno-exceptions -fno-rtti -std=c++11"
 

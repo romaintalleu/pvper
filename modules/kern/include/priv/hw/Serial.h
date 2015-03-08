@@ -6,19 +6,67 @@ namespace hw {
 
 	class Serial {
 	public:
+		enum Color {
+			Reset = 0,
+			Bold = 1,
+			ForeBlack = 30,
+			ForeRed = 31,
+			ForeGreen = 32,
+			ForeYellow = 33,
+			ForeBlue = 34,
+			ForeMagenta = 35,
+			ForeCyan = 36,
+			ForeWhite = 37,
+			BackBlack = 40,
+			BackRed = 41,
+			BackGreen = 42,
+			BackYellow = 43,
+			BackBlue = 44,
+			BackMagenta = 45,
+			BackCyan = 46,
+			BackWhite = 47,
+		};
+
 		static Serial& shared(void);
 
-		virtual uint8_t
-		getc(void) = 0;
+		uint8_t
+		getc(void);
 
-		virtual void
-		putc(uint8_t byte) = 0;
+		void
+		putc(uint8_t byte);
 
-		virtual void
-		puts(const char* str) = 0;
+		void
+		puts(const char* str);
 
-		virtual void
-		write(const void *buffer, const size_t size) = 0;
+		void
+		setColor(const Color& color);
+
+		void
+		write(const void *buffer, const size_t size);
+
+		Serial&
+		operator<<(const Color& color);
+
+		Serial&
+		operator<<(const bool& value);
+
+		Serial&
+		operator<<(const uint32_t& value);
+
+		Serial&
+		operator<<(const size_t& value) { return operator<<((uint32_t)value); }
+
+		Serial&
+		operator<<(const void* addr);
+
+		Serial&
+		operator<<(const char& ch);
+
+		Serial&
+		operator<<(const char* str);
+
+	private:
+		Serial();
 	};
 
 }
