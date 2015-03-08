@@ -36,7 +36,7 @@ static inline const char *tohex(unsigned int value, unsigned int size)
 	return buffer;
 }
 
-static inline const char *todec(unsigned int value, int leading = 0)
+static inline const char *todec(unsigned int value, int leading)
 {
 	static char buffer[11];
 	static char leadchar;

@@ -1,6 +1,5 @@
 #pragma once
-#include <stddef.h>
-#include <stdint.h>
+#include <priv/base.h>
 
 namespace pvper {
 namespace hw {
