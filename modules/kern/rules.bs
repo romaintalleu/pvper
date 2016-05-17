@@ -7,7 +7,7 @@ function kern_compile {
 	
 	local ASM_LIST="bootstrap"
 	local C_LIST="crti crtn cppsupport"
-	local CXX_LIST="bootstrap init plat/hw/Gpio plat/hw/Memory plat/hw/Serial plat/hw/Sync"
+	local CXX_LIST="bootstrap init plat/hw/Gpio plat/hw/Memory plat/hw/Serial plat/hw/Sync plat/hw/Timer"
 
 	echo "	— Task [kern_compile]"
 
